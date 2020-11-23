@@ -28,9 +28,3 @@ French box-office statistics are gently crawled from the website [jpbox-office](
 cd lib/crawling/boxoffice
 scrapy crawl jpbox -a start_year=2000 -a end_year=2020 -o ../../../data/french-box-office-23nov2020.json
 ```
-
-This will create a `json` file with all the required data. Convert it as a `csv` using 
-
-```bash
-
-```
