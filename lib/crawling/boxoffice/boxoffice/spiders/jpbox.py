@@ -3,9 +3,6 @@ import uuid
 from urllib.parse import urljoin
 
 
-# Add docs sur comment utiliser la spider
-# scrapy crawl jpbox -a start_year=2000 -a end_year=2020 -o french-box-office-23nov2020.json
-
 class JpboxSpider(scrapy.Spider):
     name = 'jpbox'
     allowed_domains = ['jpbox-office.com']
