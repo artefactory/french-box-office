@@ -1,1 +1,4 @@
 Scrapy==2.4.1
+tmdbv3api==1.7.1
+tqdm==4.53.0
+typing-extensions==3.7.4.3
