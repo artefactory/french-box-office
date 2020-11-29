@@ -122,11 +122,11 @@ def unmarshal_details(details: dict) -> MovieDetails:
             if details.belongs_to_collection \
             else {},
         'budget': details.budget,
-        'genre': unmarshal_genres(details.genres) \
+        'genres': unmarshal_genres(details.genres) \
             if details.genres \
             else [],
         'imdb_id': details.imdb_id,
-        'original_languages': details.original_language,
+        'original_language': details.original_language,
         'original_title': details.original_title,
         'overview': details.overview,
         'tmdb_popularity': details.popularity,

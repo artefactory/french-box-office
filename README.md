@@ -27,25 +27,29 @@ French box-office statistics are gently crawled from the website [jpbox-office](
 
 ```bash
 cd lib/crawling/boxoffice
-scrapy crawl jpbox -a start_year=2000 -a end_year=2020 -o ../../../data/french-box-office-23nov2020.json
+scrapy crawl jpbox -a start_year=2000 -a end_year=2020 -o ../../../../data/french-box-office-23nov2020.json
 ```
 
 It will create the following `json`:
 
-```json
+```
 [
     {
-        "id": "e99a1e99-8b14-431b-9286-a43915e688dc", // Custom id created during crawling
-        "year": 2016, // Year of release
-        "rank": "27", // Rank in number of sales during the year of release
-        "title": "Bridget Jones's Baby", // Movie title
-        "sales": "1 972 668" // Sales (nombre d'entrées) since release
+        "id": "17528", // Source website id
+        "year": 2019, // Year of release
+        "rank": "1", // Rank in sales during the year of release
+        "title": "Le Roi Lion (2019)", // Movie title
+        "total_sales": 10017995, // Sales (nombre d'entrées) since release
+        "release_date": "2019-07-17", // Date of release in France
+        "max_theaters_used": 820, // Maximum number of theaters where the movie was screened during a week
+        "first_screening_sales": null, // Sales for the first screening (not always filled in)
+        "first_day_sales": 630478, // Sales on the first day
+        "first_weekend_sales": 2559370, // Sales on the first weekend
+        "first_week_sales": 3252896 // Sales on the week
     },
     ...
 ]
 ```
-
-**Todo**: Get the website movie id and release date
 
 ### Getting movies features
 
@@ -63,7 +67,7 @@ python bin/get_movie_features.py --titles data/french-box-office-23nov2020.json 
 
 The movie titles will be used as a query parameters to TMDb API. If we get a match, further details will be extracted from the API. A typical results will be like (original query and `id` are kept in the result):
 
-```json
+```
 [    
     {
         "tmdb_id": 2332,
@@ -73,7 +77,7 @@ The movie titles will be used as a query parameters to TMDb API. If we get a mat
             "name": "Taxi - Saga"
         },
         "budget": 0,
-        "genre": [
+        "genres": [
             {
                 "id": 28,
                 "name": "Action"
@@ -84,7 +88,7 @@ The movie titles will be used as a query parameters to TMDb API. If we get a mat
             }
         ],
         "imdb_id": "tt0183869",
-        "original_languages": "fr",
+        "original_language": "fr",
         "original_title": "Taxi 2",
         "overview": "Daniel, le chauffeur de taxi dingue de vitesse, et Emilien, l'inspecteur de police inexpérimenté, se retrouvent à Paris. Le ministre de la défense japonais vient tester le savoir-faire hexagonal en matière de lutte antiterroriste et signer le contrat du siècle avec l'Etat français. Mais il est enlevé par des yakusas...",
         "tmdb_popularity": 12.892,
@@ -173,7 +177,7 @@ The movie titles will be used as a query parameters to TMDb API. If we get a mat
             },
             ...
         ],
-        "id": "ea868f4d-62c9-48ce-a6ec-deaddbb0777c",
+        "id": "2398",
         "query": "Taxi 2"
     },
     ...
