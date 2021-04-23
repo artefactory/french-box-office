@@ -4,6 +4,7 @@ from lib.utils.path import get_project_root
 # Paths
 ROOT_DIRPATH = get_project_root()
 TRAINING_DATASET_FILEPATH = os.path.join(ROOT_DIRPATH, "data", "data_prepared_session4.csv")
+LGBM_MODEL_FILEPATH = os.path.join(ROOT_DIRPATH, "models", "light_gbm_model.txt")
 
 # Training 
 BEST_K_FEATURES = 36                                          # K best features sorted by feature importance
@@ -57,3 +58,32 @@ FEATURE_IMPORTANCE = [
     'available_lang_ja',
     'jour_ferie',
     'original_lang_es']
+
+
+# feature engineeting
+# Here are some functions we wrote to help you, feel free to check them out to see what they do
+LANG_TO_KEEP = ['en', 'fr', 'es', 'it', 'ja', 'de']
+COUNTRY_TO_KEEP = ['FR', 'US', 'GB', 'DE', 'BE', 'CA']
+DICT_GENRES = {
+    'Drame': 'Drame',
+    'Comédie': 'Comédie',
+    'Romance': 'Romance',
+    'Action': 'Action',
+    'Thriller': 'Action',
+    'Aventure': 'Action',
+    'Crime': 'Action',
+    'Guerre': 'Action',
+    'Western': 'Action',
+    'Familial': 'Familial',
+    'Animation': 'Familial',
+    'Fantastique': 'Fantastique',
+    'Science-Fiction': 'Fantastique',
+    'Horreur': 'Horreur',
+    'Mystère': 'Other',
+    'Musique': 'Other',
+    'Histoire': 'Other',
+    'Documentaire': 'Other',
+    'Téléfilm': 'Other'
+}
+BUDGET_MEDIAN = 25000000.0
+RUNTIME_MEAN = 101.67367174781708

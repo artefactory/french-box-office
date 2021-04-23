@@ -4,7 +4,7 @@ from typing import Union, List
 import pandas as pd
 
 
-def read_from_json(path: str) -> Union[dict, list]:
+def read_from_json(path):
     '''
     Read and cast a json into a python object
     
@@ -18,8 +18,7 @@ def read_from_json(path: str) -> Union[dict, list]:
     data: Union[dict, list]
         Json casted as python object
     '''
-    with open(path, 'r') as infile:
-        data = json.load(infile)
+    data = json.load(open(path, 'r', encoding='utf-8', errors="ignore"))
     return data
 
 
@@ -28,3 +27,66 @@ def load_dataset(path: str) -> pd.DataFrame:
     data = pd.read_csv(path)
     data.drop(['title'], axis = 1, inplace = True)
     return data
+
+
+def read_movies_entrees(path):
+    '''
+    Read the box office dataset 
+    and casts it as an usable pandas DataFrame
+
+    Parameters
+    ----------
+    path: str
+        path to the dataset
+
+    Returns
+    -------
+    df: pd.DataFrame
+        Data as DataFrame
+    '''
+    bo = read_from_json(path)
+    bo = [
+        {
+            "year": item['year'], 
+            "title": item['title'], 
+            "id": int(item['id']), 
+            "sales": item['first_week_sales'],
+            "release_date": item['release_date']
+        } for item in bo
+    ]
+    return pd.DataFrame(bo)
+
+
+def read_movies_features(path):
+    '''
+    Read the movie features dataset 
+    and casts it as an usable pandas DataFrame
+    N.B: Fields that are not yet used are commented
+    Parameters
+    ----------
+    path: str
+        path to the dataset
+    Returns
+    -------
+    df: pd.DataFrame
+        Data as DataFrame
+    '''
+    features = read_from_json(path)
+    features = [
+        {
+            "is_adult": item['adult'],
+            "is_part_of_collection": not not item['belongs_to_collection'],
+            "collection_name": item['belongs_to_collection']['name'] if item['belongs_to_collection'] != {} else None, # Currently simple bool, may be interesting to use a more complex feature later
+            "budget": item['budget'],
+            "genres": [ genre['name'] for genre in item['genres'] ], 
+            "original_language": item['original_language'],
+            "overview": item['overview'], # Not used yet. Blob of text
+            "production_countries": [ country['iso_code'] for country in item['production_countries'] ],
+            "languages": [ language['iso_code'] for language in item['languages'] ],
+            "tagline": item['tagline'], # Not used yet. Blob of text
+            "runtime": item['runtime'],
+            "cast": item['cast'], # Not used yet. List of dicts with actor gender, name, id...
+            "id": int(item['id'])
+        } for item in features
+    ]
+    return pd.DataFrame(features)

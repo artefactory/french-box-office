@@ -1,5 +1,6 @@
 from lib.evaluation.evaluate import get_evaluation_metrics
 from loguru import logger
+from lightgbm import LGBMRegressor
 
 
 def train(lr, features, target, transformer = None):
@@ -11,3 +12,8 @@ def train(lr, features, target, transformer = None):
         predicted_target = transformer(predicted_target, forward= False)
     logger.info(get_evaluation_metrics(target, predicted_target))
     return lr
+
+
+def save_model(model: LGBMRegressor, filepath: str):
+    model.booster_.save_model(filepath, num_iteration=model.best_iteration_)
+    logger.info(f'Model saved to {filepath}')

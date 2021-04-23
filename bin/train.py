@@ -1,15 +1,16 @@
 import os
 
 import pandas as pd
+from config import (BEST_K_FEATURES, FEATURE_IMPORTANCE, LGBM_BEST_PARAMS,
+                    LGBM_MODEL_FILEPATH, TRAINING_DATASET_FILEPATH)
 from lib.evaluation.evaluate import evaluate
-from lib.modelling.training import train
+from lib.modelling.training import save_model, train
 from lib.preprocessing.preprocess import (clean_data, get_x_y,
                                           train_test_split_by_date,
                                           transform_target)
 from lib.utils.io import load_dataset
 from lightgbm import LGBMRegressor
 from loguru import logger
-from config import ROOT_DIRPATH, TRAINING_DATASET_FILEPATH, LGBM_BEST_PARAMS, BEST_K_FEATURES, FEATURE_IMPORTANCE
 
 
 def training_workflow():
@@ -31,7 +32,7 @@ def training_workflow():
     evaluate(lgbm, validation_x[features_list], validation_y, transformer=transform_target)
     logger.info("Evaluate on test set...")
     evaluate(lgbm, test_x[features_list], test_y, transformer=transform_target)
-
+    save_model(lgbm, LGBM_MODEL_FILEPATH)
 
 if __name__ == '__main__':
     training_workflow()

@@ -23,6 +23,8 @@ click==7.1.2
     #   uvicorn
 constantly==15.1.0
     # via twisted
+convertdate==2.3.2
+    # via holidays
 cryptography==3.4.7
     # via
     #   pyopenssl
@@ -38,6 +40,10 @@ flake8==3.9.1
     # via -r requirements.in
 h11==0.12.0
     # via uvicorn
+hijri-converter==2.1.1
+    # via holidays
+holidays==0.11.1
+    # via -r requirements.in
 hyperlink==21.0.0
     # via twisted
 idna==2.10
@@ -60,6 +66,8 @@ jmespath==0.10.0
     # via itemloaders
 joblib==1.0.1
     # via scikit-learn
+korean-lunar-calendar==0.2.1
+    # via holidays
 lightgbm==3.1.1
     # via -r requirements.in
 loguru==0.5.3
@@ -79,7 +87,7 @@ numpy==1.19.4
     #   scikit-learn
     #   scipy
     #   statsmodels
-pandas==1.1.4
+pandas==1.0.3
     # via
     #   -r requirements.in
     #   statsmodels
@@ -111,12 +119,18 @@ pydispatcher==2.0.5
     # via scrapy
 pyflakes==2.3.1
     # via flake8
+pymeeus==0.5.11
+    # via convertdate
 pyopenssl==20.0.1
     # via scrapy
 python-dateutil==2.8.1
-    # via pandas
+    # via
+    #   holidays
+    #   pandas
 pytz==2021.1
-    # via pandas
+    # via
+    #   convertdate
+    #   pandas
 queuelib==1.6.1
     # via scrapy
 requests==2.25.1
@@ -137,6 +151,7 @@ service-identity==18.1.0
 six==1.15.0
     # via
     #   automat
+    #   holidays
     #   parsel
     #   patsy
     #   protego
@@ -166,6 +181,8 @@ typing-extensions==3.7.4.3
 urllib3==1.26.4
     # via requests
 uvicorn==0.13.4
+    # via -r requirements.in
+vacances-scolaires-france==0.8.0
     # via -r requirements.in
 w3lib==1.22.0
     # via
