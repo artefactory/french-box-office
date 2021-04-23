@@ -30,6 +30,8 @@ cssselect==1.1.0
     # via
     #   parsel
     #   scrapy
+flake8==3.9.1
+    # via -r requirements.in
 hyperlink==21.0.0
     # via twisted
 idna==2.10
@@ -37,7 +39,9 @@ idna==2.10
     #   hyperlink
     #   requests
 importlib-metadata==4.0.1
-    # via pep517
+    # via
+    #   flake8
+    #   pep517
 incremental==21.3.0
     # via twisted
 itemadapter==0.2.0
@@ -50,15 +54,20 @@ jmespath==0.10.0
     # via itemloaders
 joblib==1.0.1
     # via scikit-learn
+lightgbm==3.1.1
+    # via -r requirements.in
 loguru==0.5.3
     # via -r requirements.in
 lxml==4.6.3
     # via
     #   parsel
     #   scrapy
+mccabe==0.6.1
+    # via flake8
 numpy==1.19.4
     # via
     #   -r requirements.in
+    #   lightgbm
     #   pandas
     #   patsy
     #   scikit-learn
@@ -86,10 +95,14 @@ pyasn1==0.4.8
     # via
     #   pyasn1-modules
     #   service-identity
+pycodestyle==2.7.0
+    # via flake8
 pycparser==2.20
     # via cffi
 pydispatcher==2.0.5
     # via scrapy
+pyflakes==2.3.1
+    # via flake8
 pyopenssl==20.0.1
     # via scrapy
 python-dateutil==2.8.1
@@ -101,9 +114,12 @@ queuelib==1.6.1
 requests==2.25.1
     # via tmdbv3api
 scikit-learn==0.23.2
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   lightgbm
 scipy==1.6.2
     # via
+    #   lightgbm
     #   scikit-learn
     #   statsmodels
 scrapy==2.4.1
@@ -142,6 +158,8 @@ w3lib==1.22.0
     #   itemloaders
     #   parsel
     #   scrapy
+wheel==0.36.2
+    # via lightgbm
 zipp==3.4.1
     # via
     #   importlib-metadata
