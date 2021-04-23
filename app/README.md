@@ -11,3 +11,4 @@ python app/server.py
 Run client:
 ```
 streamlit run app/client.py
+```
