@@ -144,3 +144,4 @@ dmypy.json
 *.csv
 *.tsv
 *.tfevents
+*.txt
