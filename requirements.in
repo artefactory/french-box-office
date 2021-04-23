@@ -10,3 +10,5 @@ pip-tools==6.1.0
 loguru==0.5.3
 flake8==3.9.1
 lightgbm==3.1.1
+fastapi==0.63.0
+uvicorn==0.13.4
