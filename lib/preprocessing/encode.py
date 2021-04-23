@@ -278,10 +278,12 @@ def get_encoded_calendar_df(data_final):
     map_col_count = dict(data_final_cal['collection_name'].value_counts())
     # We remove the "None" collection (i.e. the first item of the dictionary that corresponds to all movies that are
     # not part of a collection)
-    del map_col_count[0]
-    # We map the dictionary into a new feature: the number of movies per collection
-    data_final_cal['nb_movie_collection'] = data_final_cal['collection_name'].map(map_col_count)
-
+    if len(map_col_count) > 0:
+        del map_col_count[0]
+        # We map the dictionary into a new feature: the number of movies per collection
+        data_final_cal['nb_movie_collection'] = data_final_cal['collection_name'].map(map_col_count)
+    else:
+        data_final_cal['nb_movie_collection'] = 0
     return data_final_cal
 
 
