@@ -133,3 +133,14 @@ dmypy.json
 
 # Mac
 .DS_Store
+
+# data science
+*.pickle
+*.pkl
+*.dot
+
+# data
+*.json
+*.csv
+*.tsv
+*.tfevents
