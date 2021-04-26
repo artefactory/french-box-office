@@ -1,3 +1,4 @@
+from loguru import logger
 from tmdbv3api import TMDb, Movie, Search
 from typing import Union
 from lib.crawling.movie_features.types import MovieDetails, unmarshal_details, MovieCast, unmarshal_credits, MovieCard
@@ -91,7 +92,7 @@ class TMDbClient:
             return None
         
 
-def query_movie_data_from_title(tmdb_client, title: str) -> dict:
+def query_movie_data_from_title(tmdb_client, title: str):
     movie_card = tmdb_client.find_movie_features(title)
     # If response is not null, write to results
     if movie_card:
@@ -99,7 +100,13 @@ def query_movie_data_from_title(tmdb_client, title: str) -> dict:
         movie_card['query'] = title
         movie_card["year"] = int(movie_card['release_date'][:4])
         movie_card["first_week_sales"] = None
-    return movie_card
+        status = {"message": "Success", "success": True}
+        return movie_card, status
+    else:
+        status_message = f"Error: Movie {title} not found"
+        status = {"message": status_message, "success": False}
+        logger.error(status_message)
+        return movie_card, status
 
 
 if __name__ == "__main__":

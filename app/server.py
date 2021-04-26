@@ -1,9 +1,9 @@
 from starlette.responses import Response
-
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import uvicorn
 from pydantic import BaseModel
-import json
+from lib.workflows.inference import infer_from_movie_title
+
 
 app = FastAPI(
     title="French Box Office",
@@ -12,7 +12,7 @@ app = FastAPI(
 )
 
 class Data(BaseModel):
-    user: str
+    movie_title: str
 
 
 @app.get("/")
@@ -23,7 +23,9 @@ def read_root():
 @app.post("/predict")
 def get_prediction(data: Data):
     """Predict movies"""
-    res = f"hello {data.user}"
+    res = infer_from_movie_title(data.movie_title)
+    if res['success'] is False:
+        raise HTTPException(status_code=404, detail=res["message"])
     return res
 
 
