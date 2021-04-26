@@ -1,9 +1,9 @@
 from typing import Optional
-
+from loguru import logger
 import holidays
 import numpy as np
 import pandas as pd
-from config import COUNTRY_TO_KEEP, DICT_GENRES, LANG_TO_KEEP
+from config import COUNTRY_TO_KEEP, DICT_GENRES, LANG_TO_KEEP, FEATURE_COLS_TO_KEEP
 from sklearn.preprocessing import MultiLabelBinarizer
 from vacances_scolaires_france import SchoolHolidayDates
 
@@ -76,6 +76,7 @@ def dummy_encode(
         data = data.drop(prefix+'_'+column_values[0], axis=1)
     return data
 
+
 def multilabel_encode(
     data: pd.DataFrame, 
     column_to_encode: str,
@@ -144,6 +145,49 @@ def multilabel_encode(
     )
     data = data.drop(column_to_drop if column_to_drop else mlb.classes_[0], axis=1)
     return data
+
+
+def encode_movie_data(
+        movie_data: pd.DataFrame, budget_median: Optional[float] = None, runtime_mean: Optional[float] = None, drop_cols: bool = False) -> pd.DataFrame:
+    """This function aims to do the basic feature engineering and encoding for Movie data
+
+    Args:
+        movie_data (pd.DataFrame): sales and movie dataset merged
+        budget_median (Optional[float], optional): If provided, will fill missing values, else will compute. Defaults to None.
+        runtime_mean (Optional[float], optional): If provided, will fill missing values, else will compute. Defaults to None.
+        drop_cols (bool): If True, will reindex dataset using FEATURE_COLS_TO_KEEP
+
+    Returns:
+        pd.DataFrame: dataframe with feature engineering and encoding
+    """
+    data = movie_data.copy()
+    if budget_median is None:
+        budget_median = np.median(data.loc[data['budget'] != 0]['budget'])
+        logger.info(f'budget median: {budget_median}')
+    data = fill_null_and_zero_values(data, 'budget', budget_median)
+    if runtime_mean is None:
+        runtime_mean = np.mean(data.loc[(data['runtime'] != 0) & (data['runtime'].isnull() == False)]['runtime'])
+        logger.info(f'runtime_mean: {runtime_mean}')
+    data = fill_null_and_zero_values(data, 'runtime', runtime_mean)
+    data = fill_null_and_zero_values_for_countries(data)
+    data['original_language'] = data['original_language'].map(lambda x: x if x in LANG_TO_KEEP else 'other')
+    data['languages'] = data['languages'].map(lambda x: reduce_lang_categories(x))
+    data['production_countries'] = data['production_countries'].map(lambda x: reduce_country_categories(x))
+    data['genres'] = data['genres'].map(lambda x: reduce_genre_categories(x))
+    data = encode_bool_to_numerical(data, 'is_part_of_collection')
+    data_final = pd.get_dummies(data, prefix='original_lang', columns=['original_language'], drop_first=True)
+    data_final = data_final.set_index('id')
+    df_lang = get_encoded_languages_df(data_final)
+    df_genre = get_encoded_genre_df(data_final)
+    df_country = get_encoded_country_df(data_final)
+    data_final = pd.merge(data_final, df_lang, left_index=True, right_index=True) \
+               .merge(df_genre, left_index=True, right_index=True) \
+               .merge(df_country, left_index=True, right_index=True)
+    data_final_cal = get_encoded_calendar_df(data_final)
+    if drop_cols:
+        data_final_cal = data_final_cal.reindex(columns=FEATURE_COLS_TO_KEEP)
+    data_final_cal = data_final_cal.fillna(0)
+    return data_final_cal
 
 
 def reduce_lang_categories(lang_list, lang_to_keep=LANG_TO_KEEP):
@@ -255,6 +299,18 @@ def get_encoded_calendar_df(data_final):
     data_final_cal = pd.merge(data_final, df_holidays, how='left', left_on='release_date', right_on='date').fillna(0)
     data_final_cal['month'] = data_final_cal['release_date'].map(lambda x: int(x[5:7]))
     data_final_cal = apply_cos(data_final_cal, 'month', 'cos_month', 12)
+    return data_final_cal
+
+
+def apply_cos(df: pd.DataFrame,
+              x: str, col_name: str, period: int) -> pd.DataFrame:
+    """ Cos function on a column, for a specified period
+    """
+    df[col_name] = 2 * np.cos(2 * np.pi * df[x] / period)
+    return df    
+
+
+def get_encoded_collections_df(data_final_cal):
 
     # Collection with an high number of movies are often sagas that have worked well (ex: Star Wars, Fast and
     # Furious, ...)
@@ -284,25 +340,14 @@ def get_encoded_calendar_df(data_final):
         data_final_cal['nb_movie_collection'] = data_final_cal['collection_name'].map(map_col_count)
     else:
         data_final_cal['nb_movie_collection'] = 0
-    return data_final_cal
 
-
-def apply_cos(df: pd.DataFrame,
-              x: str, col_name: str, period: int) -> pd.DataFrame:
-    """ Cos function on a column, for a specified period
-    """
-    df[col_name] = 2 * np.cos(2 * np.pi * df[x] / period)
-    return df    
-
-
-def get_encoded_collections_df(data_final_cal):
     # We isolate the movies that are part of a collection and we store it into df_collection
     df_collection = data_final_cal.loc[data_final_cal['is_part_of_collection'] == 1]
     # We compute the rolling average of the sales of the 10 previous movies per collection 
     df_collection['rolling_sales_collection'] = df_collection.sort_values(by=['collection_name', 'release_date']) \
                 .groupby('collection_name')['sales'] \
                 .transform(lambda x: x.rolling(10, 1).mean().shift())
-    return df_collection    
+    return df_collection
 
 
 def get_encoded_actors_df(df_all):
