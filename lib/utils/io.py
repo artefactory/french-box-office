@@ -1,6 +1,6 @@
+from lib.crawling.movie_features.tmdb.client import TMDbClient
 from loguru import logger
 import json
-from typing import Union, List
 import pandas as pd
 
 

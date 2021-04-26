@@ -91,6 +91,16 @@ class TMDbClient:
             return None
         
 
+def query_movie_data_from_title(tmdb_client, title: str) -> dict:
+    movie_card = tmdb_client.find_movie_features(title)
+    # If response is not null, write to results
+    if movie_card:
+        movie_card['id'] = movie_card['tmdb_id']
+        movie_card['query'] = title
+        movie_card["year"] = int(movie_card['release_date'][:4])
+        movie_card["first_week_sales"] = None
+    return movie_card
+
 
 if __name__ == "__main__":
 
