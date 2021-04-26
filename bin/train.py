@@ -26,7 +26,7 @@ def training_workflow():
     test_x, test_y = get_x_y(test_data)
     lgbm = LGBMRegressor(**LGBM_BEST_PARAMS)
     features_list = FEATURE_IMPORTANCE[:BEST_K_FEATURES+1]
-    msg = f"Training fitting LightGBM using features: {features_list}"
+    msg = f"Training LightGBM using features: {features_list}"
     msg += f"hyper-parameters: {LGBM_BEST_PARAMS}"
     logger.info(msg)
     lgbm = train(lgbm, train_x[features_list], train_y, transformer=transform_target)
