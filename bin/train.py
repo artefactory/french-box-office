@@ -14,6 +14,8 @@ from loguru import logger
 
 
 def training_workflow():
+    """This script does the model training as of model optimization course. 
+    """    
     raw_data = load_dataset(TRAINING_DATASET_FILEPATH)
     data = clean_data(raw_data, drop_2020=False)
     train_data, validation_data, test_data = train_test_split_by_date(data,
