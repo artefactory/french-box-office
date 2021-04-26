@@ -274,6 +274,8 @@ python-dateutil==2.8.1
     #   jupyter-client
     #   pandas
     #   streamlit
+python-dotenv==0.17.0
+    # via -r requirements.in
 pytz==2021.1
     # via
     #   convertdate
