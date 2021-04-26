@@ -11,7 +11,7 @@ def clean_data(data, drop_2020=True):
     data = data.sort_values(by='release_date')
     data.release_date = pd.to_datetime(data.release_date)
     data.index = data.release_date
-    data = data.drop(columns = ['index', 'release_date', 'year'], errors='ignore')
+    data = data.drop(columns=['index', 'release_date', 'year'], errors='ignore')
     return data
 
 

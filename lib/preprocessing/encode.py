@@ -148,7 +148,7 @@ def multilabel_encode(
 
 
 def encode_movie_data(
-        movie_data: pd.DataFrame, budget_median: Optional[float] = None, runtime_mean: Optional[float] = None, drop_cols: bool = False) -> pd.DataFrame:
+        movie_data: pd.DataFrame, budget_median: Optional[float] = None, runtime_mean: Optional[float] = None, drop_cols: bool = True) -> pd.DataFrame:
     """This function aims to do the basic feature engineering and encoding for Movie data
 
     Args:
