@@ -3,9 +3,7 @@ from lib.utils.path import get_project_root
 
 # Paths
 ROOT_DIRPATH = get_project_root()
-TRAINING_DATASET_FILEPATH = os.path.join(
-    ROOT_DIRPATH, "data", "data_prepared_session4.csv"
-)
+TRAINING_DATASET_FILEPATH = os.path.join(ROOT_DIRPATH, 'data', "processed_dataset.csv")
 LGBM_MODEL_FILEPATH = os.path.join(ROOT_DIRPATH, "models", "light_gbm_model.txt")
 
 # Training
@@ -94,7 +92,6 @@ DICT_GENRES = {
 }
 BUDGET_MEDIAN = 25000000.0
 RUNTIME_MEAN = 101.67367174781708
-
 
 FEATURE_COLS_TO_KEEP = [
     "release_date",

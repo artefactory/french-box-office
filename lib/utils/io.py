@@ -25,7 +25,6 @@ def read_from_json(path):
 def load_dataset(path: str) -> pd.DataFrame:
     logger.info(f"loading raw data {path}...")
     data = pd.read_csv(path)
-    data.drop(['title'], axis = 1, inplace = True)
     return data
 
 
