@@ -10,6 +10,6 @@ if st.button('Send request to API'):
     content = json.loads(res.content)
     if res.status_code == 200:
         st.success(f"Movie '{content['original_title']}' ({content['year']}) forecasted sales: {content['box_office_sales_forecast']}")
-        st.image(f"http://image.tmdb.org/t/p/w185/{content['poster_path']}",width=400)
+        st.image(f"http://image.tmdb.org/t/p/w185/{content['poster_path']}",width=185)
     elif res.status_code == 404:
         st.error(f"{content['detail']}")
