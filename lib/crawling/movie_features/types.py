@@ -146,7 +146,8 @@ def unmarshal_details(details: dict) -> MovieDetails:
         'tagline': details.tagline,
         'title': details.title,
         'tmdb_vote_count': details.vote_count,
-        'tmdb_vote_average': details.vote_average
+        'tmdb_vote_average': details.vote_average,
+        'poster_path': details.poster_path
     }
 
 
