@@ -9,7 +9,11 @@ if st.button('Send request to API'):
     res = requests.post('http://0.0.0.0:8080/predict', json={'movie_title': movie_title})
     content = json.loads(res.content)
     if res.status_code == 200:
-        st.success(f"Movie '{content['original_title']}' ({content['year']}) forecasted sales: {content['box_office_sales_forecast']}")
-        st.image(f"http://image.tmdb.org/t/p/w185/{content['poster_path']}",width=185)
+        img_container, result_container = st.beta_columns((1, 2))
+        img_container.image(f"http://image.tmdb.org/t/p/w185/{content['poster_path']}",width=185)
+        message = f"**Movie:** '{content['original_title']}' ({content['year']})\n\n"
+        message += f"**Forecasted sales:** {round(content['box_office_sales_forecast'])}"
+        result_container.success(message)
+        
     elif res.status_code == 404:
         st.error(f"{content['detail']}")
