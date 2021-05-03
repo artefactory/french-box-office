@@ -1,8 +1,23 @@
+# Copyright (C) 2020 Artefact
+# licence-information@artefact.com
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 from starlette.responses import Response
 from fastapi import FastAPI, HTTPException
 import uvicorn
 from pydantic import BaseModel
-from lib.workflows.inference import infer_from_movie_title
 
 
 app = FastAPI(
@@ -23,10 +38,6 @@ def read_root():
 @app.post("/predict")
 def get_prediction(data: Data):
     """Predict movies"""
-    res = infer_from_movie_title(data.movie_title)
-    if res['success'] is False:
-        raise HTTPException(status_code=404, detail=res["message"])
-    return res
 
 
 if __name__ == "__main__":
