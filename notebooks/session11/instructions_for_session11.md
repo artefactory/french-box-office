@@ -46,7 +46,7 @@ conda activate french_box_office
 conda install ipykernel
 python -m ipykernel install --user --name=french_box_office_env
 ```
-Now you can run ```jupyter notebook``` and the change kernel in `Menu > kernel > Change Kernel > french_box_office_env
+Now you can run ```jupyter notebook``` and the change kernel in `Menu > kernel > Change Kernel > french_box_office_env`
 
 ## Add the path of the repository to PYTHONPATH
 
