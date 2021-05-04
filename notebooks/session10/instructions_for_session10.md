@@ -1,4 +1,4 @@
-# Prerequisites for course 11 - Model serving
+# Prerequisites for course 10 - Model serving
 
 
 ## Github repository
