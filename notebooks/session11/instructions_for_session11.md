@@ -5,7 +5,7 @@
 
 * Install [Git](https://git-scm.com/downloads)
 
-* Open a shell (conda Prompt if you are on Windows, Terminal is your are on Mac)
+* Open a shell (conda Prompt if you are on Windows, Terminal if you are on Mac)
 
 * Clone the github repository, and go to the root of the repository:
 ```bash
@@ -51,7 +51,7 @@ Now you can run ```jupyter notebook``` and the change kernel in `Menu > kernel >
 ## Add the path of the repository to PYTHONPATH
 
 Via conda, replace `[c:/replace/by/absolute/path/to/french-box-office]` by the absolute path to the repository. 
-Should work for Mac or Windows is you have conda:
+Should work for Mac or Windows if you have conda:
 ```bash
 conda activate french_box_office
 conda env config vars set PYTHONPATH="[c:/replace/by/absolute/path/to/french-box-office]:$PYTHONPATH"
