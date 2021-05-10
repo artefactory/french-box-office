@@ -1,3 +1,20 @@
+# Copyright (C) 2020 Artefact
+# licence-information@artefact.com
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+from loguru import logger
 from tmdbv3api import TMDb, Movie, Search
 from typing import Union
 from lib.crawling.movie_features.types import MovieDetails, unmarshal_details, MovieCast, unmarshal_credits, MovieCard
@@ -90,6 +107,22 @@ class TMDbClient:
         else:
             return None
         
+
+def query_movie_data_from_title(tmdb_client, title: str):
+    movie_card = tmdb_client.find_movie_features(title)
+    # If response is not null, write to results
+    if movie_card:
+        movie_card['id'] = movie_card['tmdb_id']
+        movie_card['query'] = title
+        movie_card["year"] = int(movie_card['release_date'][:4])
+        movie_card["first_week_sales"] = None
+        status = {"message": "Success", "success": True}
+        return movie_card, status
+    else:
+        status_message = f"Error: Movie {title} not found"
+        status = {"message": status_message, "success": False}
+        logger.error(status_message)
+        return movie_card, status
 
 
 if __name__ == "__main__":

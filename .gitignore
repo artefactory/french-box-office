@@ -130,3 +130,18 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Mac
+.DS_Store
+
+# data science
+*.pickle
+*.pkl
+*.dot
+
+# data
+*.json
+*.csv
+*.tsv
+*.tfevents
+*.txt

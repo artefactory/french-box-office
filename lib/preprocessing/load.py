@@ -1,5 +1,22 @@
+# Copyright (C) 2020 Artefact
+# licence-information@artefact.com
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 import pandas as pd
 from lib.utils.io import read_from_json
+from typing import List
 
 
 def read_movies_entrees(path: str) -> pd.DataFrame:
@@ -18,16 +35,8 @@ def read_movies_entrees(path: str) -> pd.DataFrame:
         Data as DataFrame
     '''
     bo = read_from_json(path)
-    bo = [
-        {
-            "year": item['year'], 
-            "title": item['title'], 
-            "id": int(item['id']), 
-            "sales": item['first_week_sales'],
-            "release_date": item['release_date']
-        } for item in bo
-    ]
-    return pd.DataFrame(bo)
+    bo = read_movies_entrees_from_loaded_json(bo)
+    return bo
 
 
 def read_movies_features(path: str) -> pd.DataFrame:
@@ -48,6 +57,27 @@ def read_movies_features(path: str) -> pd.DataFrame:
         Data as DataFrame
     '''
     features = read_from_json(path)
+    features = read_movies_features_from_loaded_json(features)
+    return features
+
+
+def read_movies_features_from_loaded_json(features: List[dict]) -> pd.DataFrame:
+    '''
+    Read the movie features dataset 
+    and casts it as an usable pandas DataFrame
+
+    N.B: Fields that are not yet used are commented
+
+    Parameters
+    ----------
+    path: str
+        path to the dataset
+
+    Returns
+    -------
+    df: pd.DataFrame
+        Data as DataFrame
+    '''
     features = [
         {
             "is_adult": item['adult'],
@@ -68,3 +98,36 @@ def read_movies_features(path: str) -> pd.DataFrame:
         } for item in features
     ]
     return pd.DataFrame(features)
+
+
+def read_movies_entrees_from_loaded_json(bo: List[dict]) -> pd.DataFrame:
+    '''
+    Read the box office dataset 
+    and casts it as an usable pandas DataFrame
+
+    Parameters
+    ----------
+    path: str
+        path to the dataset
+
+    Returns
+    -------
+    df: pd.DataFrame
+        Data as DataFrame
+    '''
+    bo = [
+        {
+            "year": item['year'], 
+            "title": item['title'], 
+            "id": int(item['id']), 
+            "sales": item['first_week_sales'],
+            "release_date": item['release_date']
+        } for item in bo
+    ]
+    return pd.DataFrame(bo)
+
+
+def get_dataset_from_api_res(movie_card: dict) -> pd.DataFrame:
+    movie_features = read_movies_features_from_loaded_json([movie_card])
+    movie_entree = read_movies_entrees_from_loaded_json([movie_card])
+    return pd.merge(movie_features, movie_entree, on='id')
